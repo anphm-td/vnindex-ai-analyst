@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  # ─── Ollama (Gemma Model Server) ──────────────────────────────────────
+  ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
+    container_name: vnindex-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+    networks:
+      - vnindex-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ─── VNINDEX AI Analyst App ───────────────────────────────────────────
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vnindex-app
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data              # SQLite DB + reports
+      - ./data/reports:/app/data/reports  # PDF reports
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=gemma4:26b
+      - FRED_API_KEY=${FRED_API_KEY:-}
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - vnindex-net
+
+  # ─── Scheduler (Background Worker) ───────────────────────────────────
+  scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vnindex-scheduler
+    command: ["python", "main.py"]
+    volumes:
+      - ./data:/app/data
+      - ./data/reports:/app/data/reports
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_MODEL=gemma4:26b
+      - FRED_API_KEY=${FRED_API_KEY:-}
+    depends_on:
+      ollama:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - vnindex-net
+
+volumes:
+  ollama_data:
+
+networks:
+  vnindex-net:
+    driver: bridge

@@ -1,0 +1,32 @@
+# VNINDEX AI Analyst - Python Dependencies
+# Core
+requests>=2.31.0
+beautifulsoup4>=4.12.0
+lxml>=5.0.0
+numpy>=1.26.0
+pandas>=2.1.0
+schedule>=1.2.0
+
+# PDF Generation
+fpdf2>=2.7.0
+
+# NLP (Vietnamese)
+# transformers>=4.35.0  # Uncomment khi muốn dùng PhoBERT
+# torch>=2.1.0          # Uncomment khi muốn dùng PhoBERT
+
+# Technical Analysis
+# TA-Lib requires C library installed first
+# Windows: pip install TA-Lib (from wheel)
+# Linux/Docker: Build from source (see Dockerfile)
+# ta-lib>=0.4.28  # Uncomment sau khi cài TA-Lib C library
+
+# UI
+streamlit>=1.29.0
+plotly>=5.18.0
+
+# Data (Optional - for more data sources)
+vnstock>=0.3.0  # Vietnamese stock data
+pandas-datareader>=0.10.0
+
+# Machine Learning
+scikit-learn>=1.3.0
