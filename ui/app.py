@@ -244,7 +244,7 @@ def main():
     """, unsafe_allow_html=True)
 
     # ─── Tabs ──────────────────────────────────────────────────────────────
-    tab1, tab2, tab3 = st.tabs(["🏠 Dashboard", "📋 Chiến lược", "📁 Kho lưu trữ"])
+    tab1, tab2, tab3, tab4 = st.tabs(["🏠 Dashboard", "📋 Chiến lược", "⭐ Yêu thích", "📁 Kho lưu trữ"])
 
     # ═══════════════════════════════════════════════════════════════════════
     # TAB 1: DASHBOARD
@@ -476,9 +476,55 @@ def main():
             st.dataframe(pd.DataFrame(stop_data), use_container_width=True, hide_index=True)
 
     # ═══════════════════════════════════════════════════════════════════════
-    # TAB 3: KHO LƯU TRỮ
+    # TAB 3: YÊU THÍCH
     # ═══════════════════════════════════════════════════════════════════════
     with tab3:
+        st.markdown("### ⭐ Danh mục theo dõi")
+        
+        all_tickers = db.get_all_tickers()
+        fav_tickers = db.get_favorite_tickers()
+        fav_symbols = [t["symbol"] for t in fav_tickers]
+        
+        # Chọn thêm mã vào danh sách yêu thích
+        options = [t["symbol"] for t in all_tickers]
+        selected_favs = st.multiselect("Chọn mã để thêm vào Yêu thích:", options, default=fav_symbols)
+        
+        if st.button("Lưu thay đổi"):
+            # Cập nhật db
+            for sym in options:
+                is_fav = sym in selected_favs
+                db.toggle_favorite(sym, is_fav)
+            st.success("Đã cập nhật danh sách yêu thích!")
+            st.rerun()
+            
+        st.markdown("---")
+        if selected_favs:
+            import pandas as pd
+            fav_data = []
+            for sym in selected_favs:
+                latest = db.get_latest_price(sym)
+                ticker_info = db.get_ticker(sym)
+                if latest and ticker_info:
+                    fav_data.append({
+                        "Mã": sym,
+                        "Công ty": ticker_info.get("company_name", ""),
+                        "Sàn": ticker_info.get("exchange", ""),
+                        "Ngành": ticker_info.get("industry", ""),
+                        "Giá": f"{latest.get('close', 0):,.0f}",
+                        "RSI(14)": f"{latest.get('rsi_14', 0):.2f}" if latest.get('rsi_14') else "N/A",
+                        "MACD": f"{latest.get('macd', 0):.2f}" if latest.get('macd') else "N/A"
+                    })
+            if fav_data:
+                st.dataframe(pd.DataFrame(fav_data), use_container_width=True, hide_index=True)
+            else:
+                st.info("Chưa có dữ liệu giá cho các mã này. Hãy chạy pipeline hoặc thu thập dữ liệu.")
+        else:
+            st.info("Danh sách yêu thích đang trống.")
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # TAB 4: KHO LƯU TRỮ
+    # ═══════════════════════════════════════════════════════════════════════
+    with tab4:
         st.markdown("### 📁 Báo cáo PDF đã xuất")
 
         reports_dir = config.REPORTS_DIR

@@ -7,6 +7,9 @@ services:
       context: .
       dockerfile: Dockerfile.ollama
     container_name: vnindex-ollama
+    environment:
+      - OLLAMA_MODEL=gemma4:26b
+      - OLLAMA_NEWS_MODEL=llama3
     ports:
       - "11434:11434"
     volumes:
@@ -38,6 +41,8 @@ services:
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
       - OLLAMA_MODEL=gemma4:26b
+      - OLLAMA_NEWS_MODEL=llama3
+      - OLLAMA_REPORT_MODEL=qwen2.5
       - FRED_API_KEY=${FRED_API_KEY:-}
     depends_on:
       ollama:

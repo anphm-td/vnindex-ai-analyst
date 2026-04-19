@@ -39,9 +39,11 @@ class PDFReportGenerator:
 
         # Market Assessment
         pdf.set_font("Helvetica", "B", 12)
-        pdf.cell(0, 10, "1. DANH GIA THI TRUONG", new_x="LMARGIN", new_y="NEXT")
+        pdf.cell(0, 10, "1. TONG QUAN THI TRUONG (DO QWEN 2.5 TONG HOP)", new_x="LMARGIN", new_y="NEXT")
         pdf.set_font("Helvetica", "", 10)
-        assessment = cio_decisions.get("market_assessment", "Chua co du lieu")
+        
+        assessment = self._generate_qwen_summary(macro_data, tech_data, news_data, risk_data, cio_decisions)
+        
         pdf.multi_cell(0, 6, self._safe_text(assessment))
         pdf.ln(5)
 
@@ -156,6 +158,32 @@ class PDFReportGenerator:
         pdf.set_line_width(0.5)
         pdf.line(10, pdf.get_y(), 200, pdf.get_y())
         pdf.ln(10)
+
+    def _generate_qwen_summary(self, macro: dict, tech: dict, news: dict, risk: dict, cio: dict) -> str:
+        """Sử dụng Qwen 2.5 để viết lời tựa tóm tắt báo cáo."""
+        try:
+            import requests
+            prompt = (
+                "Viết ĐÚNG MỘT ĐOẠN VĂN (tối đa 4 câu) tóm tắt tình hình thị trường hôm nay dành cho nhà đầu tư. "
+                "Tuyệt đối không dùng gạch đầu dòng, không in đậm, không giải thích dài dòng. "
+                f"Vĩ mô: {macro.get('status', '')}. "
+                f"Tin tức: Sentiment {news.get('market_sentiment', 0):.2f}. "
+                f"Rủi ro: {'Có kéo trụ' if risk.get('keo_tru_warning') else 'Không kéo trụ'}. "
+                f"Góc nhìn của CEO: {cio.get('market_assessment', '')}."
+            )
+            payload = {
+                "model": getattr(config, "OLLAMA_REPORT_MODEL", "qwen2.5"),
+                "prompt": prompt,
+                "stream": False,
+                "options": {"temperature": 0.3}
+            }
+            resp = requests.post(f"{config.OLLAMA_BASE_URL}/api/generate", json=payload, timeout=15)
+            if resp.status_code == 200:
+                return resp.json().get("response", "").strip()
+            return cio.get("market_assessment", "Chua co du lieu")
+        except Exception as e:
+            logger.debug(f"Qwen summary failed: {e}")
+            return cio.get("market_assessment", "Chua co du lieu")
 
     @staticmethod
     def _safe_text(text: str) -> str:

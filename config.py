@@ -46,6 +46,7 @@ NEWS_FETCH_LIMIT = 20  # Số tin tối đa mỗi lần crawl
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma4:26b")
 OLLAMA_NEWS_MODEL = os.getenv("OLLAMA_NEWS_MODEL", "llama3")
+OLLAMA_REPORT_MODEL = os.getenv("OLLAMA_REPORT_MODEL", "qwen2.5")
 OLLAMA_PARAMS = {
     "temperature": 0.2,
     "num_ctx": 8192,

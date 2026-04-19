@@ -43,7 +43,8 @@ class TechnicalAgent:
         logger.info("📊 Technical Agent: Starting analysis...")
 
         if not symbols:
-            tickers = self.db.get_all_tickers(exchange="HOSE")
+            # Lấy tất cả mã (bao gồm cả HOSE, HNX, UPCOM) thay vì chỉ HOSE
+            tickers = self.db.get_all_tickers()
             symbols = [t["symbol"] for t in tickers]
 
         results = {}

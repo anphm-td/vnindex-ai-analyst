@@ -3,8 +3,9 @@ FROM ollama/ollama:latest
 RUN echo '#!/bin/bash' > /entrypoint.sh && \
     echo 'ollama serve &' >> /entrypoint.sh && \
     echo 'sleep 5' >> /entrypoint.sh && \
-    echo 'echo "Pulling Gemma model..."' >> /entrypoint.sh && \
-    echo 'ollama pull gemma3:4b' >> /entrypoint.sh && \
+    echo 'echo "Pulling models..."' >> /entrypoint.sh && \
+    echo 'if [ ! -z "$OLLAMA_MODEL" ]; then ollama pull "$OLLAMA_MODEL"; fi' >> /entrypoint.sh && \
+    echo 'if [ ! -z "$OLLAMA_NEWS_MODEL" ]; then ollama pull "$OLLAMA_NEWS_MODEL"; fi' >> /entrypoint.sh && \
     echo 'wait' >> /entrypoint.sh && \
     chmod +x /entrypoint.sh
 

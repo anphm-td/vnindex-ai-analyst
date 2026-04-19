@@ -1,56 +1,93 @@
-# Seed data: Danh sách mã cổ phiếu phổ biến trên HOSE
-HOSE_TICKERS = [
-    ("VNM", "CTCP Sữa Việt Nam", "Thực phẩm", "HOSE"),
-    ("HPG", "CTCP Tập đoàn Hòa Phát", "Thép", "HOSE"),
-    ("FPT", "CTCP FPT", "Công nghệ", "HOSE"),
-    ("VCB", "NH TMCP Ngoại thương Việt Nam", "Ngân hàng", "HOSE"),
-    ("BID", "NH TMCP Đầu tư và Phát triển Việt Nam", "Ngân hàng", "HOSE"),
-    ("VHM", "CTCP Vinhomes", "Bất động sản", "HOSE"),
-    ("VIC", "Tập đoàn Vingroup", "Bất động sản", "HOSE"),
-    ("MSN", "CTCP Tập đoàn Masan", "Thực phẩm", "HOSE"),
-    ("MWG", "CTCP Đầu tư Thế Giới Di Động", "Bán lẻ", "HOSE"),
-    ("SSI", "CTCP Chứng khoán SSI", "Chứng khoán", "HOSE"),
-    ("VND", "CTCP Chứng khoán VNDirect", "Chứng khoán", "HOSE"),
-    ("TCB", "NH TMCP Kỹ Thương Việt Nam", "Ngân hàng", "HOSE"),
-    ("MBB", "NH TMCP Quân Đội", "Ngân hàng", "HOSE"),
-    ("ACB", "NH TMCP Á Châu", "Ngân hàng", "HOSE"),
-    ("CTG", "NH TMCP Công Thương Việt Nam", "Ngân hàng", "HOSE"),
-    ("STB", "NH TMCP Sài Gòn Thương Tín", "Ngân hàng", "HOSE"),
-    ("GAS", "Tổng Công ty Khí Việt Nam", "Dầu khí", "HOSE"),
-    ("PLX", "Tập đoàn Xăng Dầu Việt Nam", "Dầu khí", "HOSE"),
-    ("SAB", "Tổng Công ty CP Bia - Rượu - NGK Sài Gòn", "Đồ uống", "HOSE"),
-    ("VRE", "CTCP Vincom Retail", "Bất động sản", "HOSE"),
-    ("NVL", "CTCP Tập đoàn Đầu tư Địa ốc No Va", "Bất động sản", "HOSE"),
-    ("DIG", "CTCP Đầu tư Phát triển Xây dựng", "Bất động sản", "HOSE"),
-    ("KDH", "CTCP Đầu tư Kinh Doanh Nhà Khang Điền", "Bất động sản", "HOSE"),
-    ("PDR", "CTCP Phát Đạt", "Bất động sản", "HOSE"),
-    ("POW", "Tổng Công ty Điện lực Dầu khí Việt Nam", "Điện", "HOSE"),
-    ("REE", "CTCP Cơ Điện Lạnh", "Công nghiệp", "HOSE"),
-    ("PNJ", "CTCP Vàng Bạc Đá Quý Phú Nhuận", "Bán lẻ", "HOSE"),
-    ("DGC", "CTCP Tập đoàn Hóa chất Đức Giang", "Hóa chất", "HOSE"),
-    ("GMD", "CTCP Gemadept", "Vận tải", "HOSE"),
-    ("VNINDEX", "Chỉ số VN-Index", "Chỉ số", "HOSE"),
-]
+import logging
+from pathlib import Path
+import sys
 
+# Thêm đường dẫn để import
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from database.models import init_db, get_connection
+from database.db_manager import DatabaseManager
+
+try:
+    from vnstock import listing_companies
+except ImportError:
+    print("Vui lòng cài đặt vnstock bằng lệnh: pip install vnstock")
+    sys.exit(1)
+
+# Danh sách 30 mã trong rổ VN30 (tính đến thời điểm hiện tại)
+VN30_TICKERS = {
+    "ACB", "BCM", "BID", "BVH", "CTG", "FPT", "GAS", "GVR", "HDB", "HPG", 
+    "MBB", "MSN", "MWG", "PLX", "POW", "SAB", "SHB", "SSB", "SSI", "STB", 
+    "TCB", "TPB", "VCB", "VHM", "VIB", "VIC", "VJC", "VNM", "VPB", "VRE"
+}
+
+def setup_database_schema():
+    """Đảm bảo bảng có cột is_vn30"""
+    init_db()
+    conn = get_connection()
+    try:
+        conn.execute("ALTER TABLE tickers ADD COLUMN is_vn30 INTEGER DEFAULT 0")
+        conn.commit()
+    except Exception as e:
+        # Bỏ qua nếu cột đã tồn tại
+        pass
+    finally:
+        conn.close()
 
 def seed_tickers():
-    """Thêm danh sách mã cổ phiếu mẫu vào database."""
-    import sys
-    from pathlib import Path
-    sys.path.insert(0, str(Path(__file__).resolve().parent))
-
-    from database.models import init_db
-    from database.db_manager import DatabaseManager
-
-    init_db()
+    """Lấy danh sách tất cả cổ phiếu trên 3 sàn từ vnstock và lưu vào database."""
+    setup_database_schema()
     db = DatabaseManager()
+    
+    print("Đang tải danh sách công ty từ vnstock...")
+    df = listing_companies()
+    
+    # Lọc ra các mã chứng khoán (bỏ qua chứng quyền, ETF...)
+    # Trong vnstock, 'ticker' là mã, 'comGroupCode' là sàn, 'organName' là tên, 'sector' là ngành
+    # Lưu ý: Các phiên bản vnstock có thể có tên cột khác nhau
+    
+    count = 0
+    for _, row in df.iterrows():
+        try:
+            # Lấy thông tin cơ bản
+            symbol = str(row.get("ticker", "")).strip()
+            if len(symbol) > 5 or not symbol.isalnum():
+                continue # Bỏ qua chứng quyền hoặc mã lỗi
+                
+            name = str(row.get("organName", "")).strip()
+            if not name:
+                name = str(row.get("organShortName", ""))
+                
+            industry = str(row.get("sector", "")).strip()
+            exchange = str(row.get("comGroupCode", "")).strip()
+            
+            # Chuẩn hóa tên sàn
+            if exchange == "VNINDEX": exchange = "HOSE"
+            if exchange == "HNXIndex": exchange = "HNX"
+            if exchange == "UpcomIndex": exchange = "UPCOM"
+            
+            if exchange not in ["HOSE", "HNX", "UPCOM"]:
+                continue
+                
+            db.upsert_ticker(symbol, name, industry, exchange)
+            
+            # Cập nhật cờ VN30
+            is_vn30 = 1 if symbol in VN30_TICKERS else 0
+            
+            # Update trực tiếp vào cột is_vn30 (db_manager chưa hỗ trợ sẵn cột này qua upsert)
+            conn = get_connection()
+            conn.execute("UPDATE tickers SET is_vn30 = ? WHERE symbol = ?", (is_vn30, symbol))
+            conn.commit()
+            conn.close()
+            
+            count += 1
+            if count % 100 == 0:
+                print(f"Đã xử lý {count} mã...")
+                
+        except Exception as e:
+            continue
 
-    for symbol, name, industry, exchange in HOSE_TICKERS:
-        db.upsert_ticker(symbol, name, industry, exchange)
-        print(f"  ✅ {symbol}: {name}")
-
-    print(f"\n🎉 Seeded {len(HOSE_TICKERS)} tickers!")
-
+    print(f"\n🎉 Đã nạp thành công {count} mã cổ phiếu vào database, bao gồm danh mục VN30!")
 
 if __name__ == "__main__":
     seed_tickers()

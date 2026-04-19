@@ -53,6 +53,30 @@ class DatabaseManager:
             conn.close()
 
     @staticmethod
+    def get_favorite_tickers() -> list[dict]:
+        """Lấy danh sách mã chứng khoán yêu thích."""
+        conn = get_connection()
+        try:
+            try:
+                rows = conn.execute("SELECT * FROM tickers WHERE is_favorite = 1").fetchall()
+                return [dict(row) for row in rows]
+            except sqlite3.OperationalError:
+                return []
+        finally:
+            conn.close()
+
+    @staticmethod
+    def toggle_favorite(symbol: str, is_favorite: bool):
+        """Bật/tắt cờ yêu thích cho mã."""
+        conn = get_connection()
+        try:
+            conn.execute("UPDATE tickers SET is_favorite = ? WHERE symbol = ?", 
+                         (1 if is_favorite else 0, symbol))
+            conn.commit()
+        finally:
+            conn.close()
+
+    @staticmethod
     def get_ticker(symbol: str) -> Optional[dict]:
         """Lấy thông tin một mã cổ phiếu."""
         conn = get_connection()
