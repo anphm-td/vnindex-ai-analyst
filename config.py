@@ -43,13 +43,18 @@ NEWS_SOURCES = {
 NEWS_FETCH_LIMIT = 20  # Số tin tối đa mỗi lần crawl
 
 # ─── Ollama / Gemma 4 ─────────────────────────────────────────────────────────
+# Ollama Settings
 OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma4:26b")
-OLLAMA_NEWS_MODEL = os.getenv("OLLAMA_NEWS_MODEL", "llama3")
-OLLAMA_REPORT_MODEL = os.getenv("OLLAMA_REPORT_MODEL", "qwen2.5")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "gemma4:26b")  # Model chính cho CEO
+OLLAMA_NEWS_MODEL = os.getenv("OLLAMA_NEWS_MODEL", "llama3")  # Model đọc báo
+OLLAMA_REPORT_MODEL = os.getenv("OLLAMA_REPORT_MODEL", "qwen2.5")  # Model viết báo cáo
+OLLAMA_FUNDAMENTAL_MODEL = os.getenv("OLLAMA_FUNDAMENTAL_MODEL", "deepseek-r1:8b")  # Phân tích cơ bản
+
+# Parameters cho LLM
 OLLAMA_PARAMS = {
     "temperature": 0.2,
-    "num_ctx": 8192,
+    "top_p": 0.9,
+    "num_predict": 2048,
 }
 
 # ─── Technical Analysis ───────────────────────────────────────────────────────
@@ -70,6 +75,7 @@ EXCHANGE_RATE_MA_WINDOW = 5  # Trung bình 5 ngày
 
 # ─── Scheduler ─────────────────────────────────────────────────────────────────
 SCHEDULE_MACRO = "08:00"
+SCHEDULE_FUNDAMENTAL = "08:05"
 SCHEDULE_NEWS = "08:10"
 SCHEDULE_TECHNICAL = "08:20"
 SCHEDULE_CIO = "08:30"

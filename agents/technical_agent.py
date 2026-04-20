@@ -42,7 +42,7 @@ class TechnicalAgent:
     def run(self, symbols: list[str] = None) -> dict:
         logger.info("📊 Technical Agent: Starting analysis...")
 
-        if not symbols:
+        if symbols is None:
             # Lấy tất cả mã (bao gồm cả HOSE, HNX, UPCOM) thay vì chỉ HOSE
             tickers = self.db.get_all_tickers()
             symbols = [t["symbol"] for t in tickers]

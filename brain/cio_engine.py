@@ -104,10 +104,27 @@ class CIOEngine:
             sections.append(f"⚠️ {alert.get('message', '')}")
 
         # Kỹ thuật
-        sections.append("\n=== KỸ THUẬT ===")
+        sections.append("\n=== KỸ THUẬT NỔI BẬT ===")
         breadth = tech.get("market_breadth", {})
         sections.append(f"Market Breadth: {breadth.get('advance',0)}↑/{breadth.get('decline',0)}↓ (ratio={breadth.get('ratio',0):.2f})")
-        for sym, ind in list(tech.get("indicators", {}).items())[:10]:
+        
+        all_indicators = tech.get("indicators", {})
+        fav_symbols = [t["symbol"] for t in self.db.get_favorite_tickers()]
+        
+        highlight_symbols = []
+        for sym, ind in all_indicators.items():
+            if sym in fav_symbols:
+                highlight_symbols.append((sym, ind))
+                continue
+            macd_sig = ind.get("macd_signal_type", "")
+            # Chọn lọc các mã có tín hiệu tốt để phân tích sâu
+            if macd_sig in ["GOLDEN CROSS", "BULLISH"]:
+                highlight_symbols.append((sym, ind))
+                
+        # Giới hạn số lượng mã đưa vào LLM để không bị tràn context (tối đa 30)
+        highlight_symbols = highlight_symbols[:30]
+        
+        for sym, ind in highlight_symbols:
             sections.append(
                 f"{sym}: Close={ind.get('close','N/A')}, RSI={ind.get('rsi_14','N/A')} "
                 f"({ind.get('rsi_signal','N/A')}), MACD={ind.get('macd_signal_type','N/A')}, "

@@ -32,39 +32,42 @@ def run_fetcher(days: int = 150):
     
     all_records = []
     
-    for t in tickers:
+    def fetch_for_symbol(t):
         symbol = t["symbol"]
+        records = []
         try:
-            # Tham số vnstock: symbol, start_date, end_date, resolution, type
             if symbol == "VNINDEX":
                 df = stock_historical_data(symbol, start_date, end_date, "1D", "index")
             else:
                 df = stock_historical_data(symbol, start_date, end_date, "1D", "stock")
                 
             if df is not None and not df.empty:
-                count = 0
                 for _, row in df.iterrows():
-                    # Xử lý format cột thời gian
                     time_val = row.get("time", row.get("Date", None))
                     date_str = str(time_val).split(" ")[0] if time_val else None
                     if not date_str:
                         continue
                     
-                    # vnstock có thể trả về 'open' hoặc 'Open'
                     open_p = float(row.get("open", row.get("Open", 0)))
                     high_p = float(row.get("high", row.get("High", 0)))
                     low_p = float(row.get("low", row.get("Low", 0)))
                     close_p = float(row.get("close", row.get("Close", 0)))
                     vol = int(row.get("volume", row.get("Volume", 0)))
                     
-                    all_records.append((symbol, date_str, open_p, high_p, low_p, close_p, vol))
-                    count += 1
-                logger.info(f"✅ {symbol}: {count} phiên giao dịch")
+                    records.append((symbol, date_str, open_p, high_p, low_p, close_p, vol))
+                logger.info(f"✅ {symbol}: {len(records)} phiên giao dịch")
             else:
                 logger.warning(f"❌ {symbol}: Không lấy được dữ liệu")
-                
         except Exception as e:
             logger.error(f"❌ {symbol} - Lỗi: {e}")
+        return records
+
+    import concurrent.futures
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+        results = list(executor.map(fetch_for_symbol, tickers))
+        
+    for res in results:
+        all_records.extend(res)
 
     if all_records:
         db.insert_daily_prices_batch(all_records)

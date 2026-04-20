@@ -10,15 +10,12 @@ services:
     environment:
       - OLLAMA_MODEL=gemma4:26b
       - OLLAMA_NEWS_MODEL=llama3
+      - OLLAMA_FUNDAMENTAL_MODEL=deepseek-r1:8b
     ports:
       - "11434:11434"
     volumes:
       - ollama_data:/root/.ollama
     restart: unless-stopped
-    deploy:
-      resources:
-        limits:
-          memory: 8G
     networks:
       - vnindex-net
     healthcheck:

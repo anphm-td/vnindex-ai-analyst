@@ -338,3 +338,444 @@
 2026-04-19 13:58:53,204 [VNINDEX] INFO: ============================================================
 2026-04-19 13:58:53,204 [VNINDEX] INFO: 🏁 Daily pipeline completed!
 2026-04-19 13:58:53,204 [VNINDEX] INFO: ============================================================
+2026-04-19 08:09:40,361 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:09:40,420 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:09:40,422 [VNINDEX] INFO: 📅 Scheduler configured:
+2026-04-19 08:09:40,422 [VNINDEX] INFO:   08:00 - Macro Agent
+2026-04-19 08:09:40,425 [VNINDEX] INFO:   08:10 - News Agent
+2026-04-19 08:09:40,425 [VNINDEX] INFO:   08:20 - Technical Agent
+2026-04-19 08:09:40,426 [VNINDEX] INFO:   08:30 - CIO Engine
+2026-04-19 08:09:40,428 [VNINDEX] INFO:   08:45 - PDF Report
+2026-04-19 08:09:40,429 [VNINDEX] INFO: ⏰ Scheduler started. Waiting for scheduled tasks...
+2026-04-19 08:10:01,767 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:10:01,823 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:10:05,274 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:10:05,321 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:10:05,324 [VNINDEX] INFO: 🚀 Running FULL pipeline immediately...
+2026-04-19 08:10:05,326 [VNINDEX] INFO: ============================================================
+2026-04-19 08:10:05,326 [VNINDEX] INFO: STEP 1/5: MACRO ANALYSIS
+2026-04-19 08:10:05,327 [agents.macro_agent] INFO: 🌍 Macro Agent: Starting analysis...
+2026-04-19 08:10:05,328 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-19 08:10:05,387 [agents.macro_agent] INFO:   DXY: 104.25
+2026-04-19 08:10:05,388 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-19 08:10:05,442 [agents.macro_agent] INFO:   US10Y: 4.35%
+2026-04-19 08:10:10,428 [VNINDEX] INFO: ============================================================
+2026-04-19 08:10:10,430 [VNINDEX] INFO: STEP 2/5: NEWS ANALYSIS
+2026-04-19 08:10:10,486 [agents.news_agent] INFO: 📰 News Agent: Starting analysis...
+2026-04-19 08:10:10,632 [agents.news_agent] ERROR: RSS error (cafef): 404 Client Error: Not Found for url: https://cafef.vn/rss/thi-truong-chung-khoan.rss
+2026-04-19 08:10:15,560 [agents.macro_agent] ERROR:   VCB exchange rate fetch error: HTTPSConnectionPool(host='portal.vietcombank.com.vn', port=443): Read timed out. (read timeout=10)
+2026-04-19 08:10:15,562 [agents.macro_agent] INFO: 🌍 Macro Agent: Completed. Status=OK
+2026-04-19 08:10:15,563 [VNINDEX] INFO: ✅ Macro Agent completed.
+2026-04-19 08:10:15,565 [VNINDEX] INFO: ============================================================
+2026-04-19 08:10:15,567 [VNINDEX] INFO: STEP 2/5: NEWS ANALYSIS
+2026-04-19 08:10:15,613 [agents.news_agent] INFO: 📰 News Agent: Starting analysis...
+2026-04-19 08:10:15,757 [agents.news_agent] ERROR: RSS error (cafef): 404 Client Error: Not Found for url: https://cafef.vn/rss/thi-truong-chung-khoan.rss
+2026-04-19 08:11:11,251 [agents.news_agent] INFO: 📰 News Agent: Done. 4 articles, sentiment=+0.0000
+2026-04-19 08:11:11,252 [VNINDEX] INFO: ✅ News Agent completed.
+2026-04-19 08:11:16,414 [agents.news_agent] INFO: 📰 News Agent: Done. 4 articles, sentiment=+0.0000
+2026-04-19 08:11:16,415 [VNINDEX] INFO: ✅ News Agent completed.
+2026-04-19 08:11:16,417 [VNINDEX] INFO: ============================================================
+2026-04-19 08:11:16,419 [VNINDEX] INFO: STEP 3/5: TECHNICAL ANALYSIS
+2026-04-19 08:11:16,420 [agents.technical_agent] INFO: 📊 Technical Agent: Starting analysis...
+2026-04-19 08:11:16,546 [agents.technical_agent] INFO: TA-Lib loaded successfully.
+2026-04-19 08:11:22,816 [agents.technical_agent] INFO: 📊 Technical Agent: Done. 30 symbols analyzed.
+2026-04-19 08:11:22,817 [VNINDEX] INFO: ✅ Technical Agent completed.
+2026-04-19 08:11:22,817 [VNINDEX] INFO: ============================================================
+2026-04-19 08:11:22,818 [VNINDEX] INFO: STEP 4/5: CEO DECISION ENGINE
+2026-04-19 08:11:22,819 [agents.risk_manager] INFO: 🛡️ Risk Manager: Starting analysis...
+2026-04-19 08:11:23,875 [agents.risk_manager] INFO: 🛡️ Risk Manager: Done. 4 alerts.
+2026-04-19 08:11:23,876 [brain.cio_engine] INFO: 🧠 CIO Engine: Starting decision process...
+2026-04-19 08:11:23,877 [brain.cio_engine] INFO:   Calling Ollama (gemma4:26b)...
+2026-04-19 08:11:25,569 [brain.cio_engine] ERROR:   Ollama call failed: 500 Server Error: Internal Server Error for url: http://ollama:11434/api/generate
+2026-04-19 08:11:25,570 [brain.cio_engine] INFO:   Using rule-based fallback...
+2026-04-19 08:11:27,336 [brain.cio_engine] INFO: 🧠 CIO Engine: Done. 30 decisions made.
+2026-04-19 08:11:27,337 [VNINDEX] INFO: ✅ CEO Agent completed.
+2026-04-19 08:11:27,338 [VNINDEX] INFO: ============================================================
+2026-04-19 08:11:27,338 [VNINDEX] INFO: STEP 5/5: PDF REPORT GENERATION
+2026-04-19 08:11:27,339 [reports.pdf_generator] INFO: 📄 Generating PDF report: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 08:11:27,366 [reports.pdf_generator] INFO: 📄 PDF saved: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 08:11:27,366 [VNINDEX] INFO: ✅ Report generated: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 08:11:27,367 [VNINDEX] INFO: ============================================================
+2026-04-19 08:11:27,368 [VNINDEX] INFO: 🏁 Daily pipeline completed!
+2026-04-19 08:11:27,369 [VNINDEX] INFO: ============================================================
+2026-04-19 08:11:27,523 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:11:27,576 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:18:03,428 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:18:03,478 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:20:11,199 [VNINDEX] INFO: ============================================================
+2026-04-19 08:20:11,202 [VNINDEX] INFO: STEP 3/5: TECHNICAL ANALYSIS
+2026-04-19 08:20:11,203 [agents.technical_agent] INFO: 📊 Technical Agent: Starting analysis...
+2026-04-19 08:20:11,316 [agents.technical_agent] INFO: TA-Lib loaded successfully.
+2026-04-19 08:20:16,652 [agents.technical_agent] INFO: 📊 Technical Agent: Done. 30 symbols analyzed.
+2026-04-19 08:20:16,653 [VNINDEX] INFO: ✅ Technical Agent completed.
+2026-04-19 08:28:33,945 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:28:34,004 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:28:59,778 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:28:59,845 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:30:15,131 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:30:15,212 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:30:16,617 [VNINDEX] INFO: ============================================================
+2026-04-19 08:30:16,620 [VNINDEX] INFO: STEP 4/5: CEO DECISION ENGINE
+2026-04-19 08:30:16,622 [agents.risk_manager] INFO: 🛡️ Risk Manager: Starting analysis...
+2026-04-19 08:30:18,413 [agents.risk_manager] INFO: 🛡️ Risk Manager: Done. 4 alerts.
+2026-04-19 08:30:18,414 [brain.cio_engine] INFO: 🧠 CIO Engine: Starting decision process...
+2026-04-19 08:30:18,415 [VNINDEX] ERROR: ❌ CEO Agent failed: 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/app/main.py", line 103, in run_cio
+    pipeline_state["cio_result"] = cio.analyze(
+                                   ^^^^^^^^^^^^
+  File "/app/brain/cio_engine.py", line 62, in analyze
+    user_prompt = self._build_prompt(macro_data, tech_data, news_data, risk_data)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/brain/cio_engine.py", line 98, in _build_prompt
+    sections.append(f"DXY: {macro.get('dxy', 'N/A')}")
+                            ^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+2026-04-19 08:32:51,381 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:32:51,485 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:35:36,813 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:35:36,884 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:38:06,698 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:38:06,783 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:38:32,475 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 08:38:32,558 [database.models] INFO: Database initialized successfully.
+2026-04-19 08:45:18,344 [VNINDEX] INFO: ============================================================
+2026-04-19 08:45:18,346 [VNINDEX] INFO: STEP 5/5: PDF REPORT GENERATION
+2026-04-19 08:45:18,347 [reports.pdf_generator] INFO: 📄 Generating PDF report: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 08:45:18,351 [VNINDEX] ERROR: ❌ Report generation failed: 'NoneType' object has no attribute 'get'
+Traceback (most recent call last):
+  File "/app/main.py", line 121, in run_report
+    filepath = generator.generate(
+               ^^^^^^^^^^^^^^^^^^^
+  File "/app/reports/pdf_generator.py", line 58, in generate
+    f"DXY: {macro_data.get('dxy', 'N/A')}",
+            ^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+2026-04-19 08:45:18,393 [VNINDEX] INFO: ============================================================
+2026-04-19 08:45:18,394 [VNINDEX] INFO: 🏁 Daily pipeline completed!
+2026-04-19 08:45:18,394 [VNINDEX] INFO: ============================================================
+2026-04-19 10:29:23,591 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:29:23,638 [database.models] INFO: Database initialized successfully.
+2026-04-19 10:29:23,639 [VNINDEX] INFO: 📅 Scheduler configured:
+2026-04-19 10:29:23,639 [VNINDEX] INFO:   08:00 - Macro Agent
+2026-04-19 10:29:23,640 [VNINDEX] INFO:   08:10 - News Agent
+2026-04-19 10:29:23,640 [VNINDEX] INFO:   08:20 - Technical Agent
+2026-04-19 10:29:23,641 [VNINDEX] INFO:   08:30 - CIO Engine
+2026-04-19 10:29:23,641 [VNINDEX] INFO:   08:45 - PDF Report
+2026-04-19 10:29:23,642 [VNINDEX] INFO: ⏰ Scheduler started. Waiting for scheduled tasks...
+2026-04-19 10:29:38,137 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:29:38,195 [database.models] INFO: Database initialized successfully.
+2026-04-19 10:29:41,321 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:29:41,421 [database.models] INFO: Database initialized successfully.
+2026-04-19 10:29:41,425 [VNINDEX] INFO: 🚀 Running FULL pipeline immediately...
+2026-04-19 10:29:41,426 [VNINDEX] INFO: ============================================================
+2026-04-19 10:29:41,427 [VNINDEX] INFO: STEP 1/5: MACRO ANALYSIS
+2026-04-19 10:29:41,428 [agents.macro_agent] INFO: 🌍 Macro Agent: Starting analysis...
+2026-04-19 10:29:41,429 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-19 10:29:41,534 [agents.macro_agent] INFO:   DXY: 104.25
+2026-04-19 10:29:41,535 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-19 10:29:41,593 [agents.macro_agent] INFO:   US10Y: 4.35%
+2026-04-19 10:29:51,747 [agents.macro_agent] ERROR:   VCB exchange rate fetch error: HTTPSConnectionPool(host='portal.vietcombank.com.vn', port=443): Read timed out. (read timeout=10)
+2026-04-19 10:29:51,748 [agents.macro_agent] INFO: 🌍 Macro Agent: Completed. Status=OK
+2026-04-19 10:29:51,749 [VNINDEX] INFO: ✅ Macro Agent completed.
+2026-04-19 10:29:51,750 [VNINDEX] INFO: ============================================================
+2026-04-19 10:29:51,750 [VNINDEX] INFO: STEP 2/5: NEWS ANALYSIS
+2026-04-19 10:29:51,862 [agents.news_agent] INFO: 📰 News Agent: Starting analysis...
+2026-04-19 10:29:51,992 [agents.news_agent] ERROR: RSS error (cafef): 404 Client Error: Not Found for url: https://cafef.vn/rss/thi-truong-chung-khoan.rss
+2026-04-19 10:30:32,991 [agents.news_agent] INFO: 📰 News Agent: Done. 4 articles, sentiment=+0.3600
+2026-04-19 10:30:32,992 [VNINDEX] INFO: ✅ News Agent completed.
+2026-04-19 10:30:32,993 [VNINDEX] INFO: ============================================================
+2026-04-19 10:30:32,994 [VNINDEX] INFO: STEP 3/5: TECHNICAL ANALYSIS
+2026-04-19 10:30:32,995 [agents.technical_agent] INFO: 📊 Technical Agent: Starting analysis...
+2026-04-19 10:30:33,171 [agents.technical_agent] INFO: TA-Lib loaded successfully.
+2026-04-19 10:31:52,530 [agents.technical_agent] INFO: 📊 Technical Agent: Done. 30 symbols analyzed.
+2026-04-19 10:31:52,532 [VNINDEX] INFO: ✅ Technical Agent completed.
+2026-04-19 10:31:52,532 [VNINDEX] INFO: ============================================================
+2026-04-19 10:31:52,533 [VNINDEX] INFO: STEP 4/5: CEO DECISION ENGINE
+2026-04-19 10:31:52,534 [agents.risk_manager] INFO: 🛡️ Risk Manager: Starting analysis...
+2026-04-19 10:31:53,919 [agents.risk_manager] INFO: 🛡️ Risk Manager: Done. 4 alerts.
+2026-04-19 10:31:53,919 [brain.cio_engine] INFO: 🧠 CIO Engine: Starting decision process...
+2026-04-19 10:31:53,920 [brain.cio_engine] INFO:   Calling Ollama (gemma4:26b)...
+2026-04-19 10:31:57,148 [brain.cio_engine] ERROR:   Ollama call failed: 500 Server Error: Internal Server Error for url: http://ollama:11434/api/generate
+2026-04-19 10:31:57,149 [brain.cio_engine] INFO:   Using rule-based fallback...
+2026-04-19 10:31:58,700 [brain.cio_engine] INFO: 🧠 CIO Engine: Done. 30 decisions made.
+2026-04-19 10:31:58,701 [VNINDEX] INFO: ✅ CEO Agent completed.
+2026-04-19 10:31:58,701 [VNINDEX] INFO: ============================================================
+2026-04-19 10:31:58,702 [VNINDEX] INFO: STEP 5/5: PDF REPORT GENERATION
+2026-04-19 10:31:58,702 [reports.pdf_generator] INFO: 📄 Generating PDF report: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 10:31:58,731 [reports.pdf_generator] INFO: 📄 PDF saved: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 10:31:58,732 [VNINDEX] INFO: ✅ Report generated: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 10:31:58,733 [VNINDEX] INFO: ============================================================
+2026-04-19 10:31:58,733 [VNINDEX] INFO: 🏁 Daily pipeline completed!
+2026-04-19 10:31:58,734 [VNINDEX] INFO: ============================================================
+2026-04-19 10:31:58,870 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:31:58,972 [database.models] INFO: Database initialized successfully.
+2026-04-19 10:32:32,852 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:32:32,931 [database.models] INFO: Database initialized successfully.
+2026-04-19 10:32:42,040 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:32:42,095 [database.models] INFO: Database initialized successfully.
+2026-04-19 10:32:52,886 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:32:52,949 [database.models] INFO: Database initialized successfully.
+2026-04-19 10:32:55,846 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:32:55,956 [database.models] INFO: Database initialized successfully.
+2026-04-19 10:34:15,949 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:34:16,057 [database.models] INFO: Database initialized successfully.
+2026-04-19 10:35:05,768 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 10:35:05,857 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:23:05,428 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:23:05,487 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:23:05,488 [VNINDEX] INFO: 📅 Scheduler configured:
+2026-04-19 11:23:05,489 [VNINDEX] INFO:   08:00 - Macro Agent
+2026-04-19 11:23:05,489 [VNINDEX] INFO:   08:05 - Fundamental Agent
+2026-04-19 11:23:05,490 [VNINDEX] INFO:   08:10 - News Agent
+2026-04-19 11:23:05,491 [VNINDEX] INFO:   08:20 - Technical Agent
+2026-04-19 11:23:05,492 [VNINDEX] INFO:   08:30 - CIO Engine
+2026-04-19 11:23:05,493 [VNINDEX] INFO:   08:45 - PDF Report
+2026-04-19 11:23:05,493 [VNINDEX] INFO: ⏰ Scheduler started. Waiting for scheduled tasks...
+2026-04-19 11:23:13,125 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:23:13,180 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:23:19,557 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:23:19,655 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:23:19,662 [VNINDEX] INFO: 🚀 Running FULL pipeline immediately...
+2026-04-19 11:23:19,663 [VNINDEX] INFO: ============================================================
+2026-04-19 11:23:19,664 [VNINDEX] INFO: STEP 1/5: MACRO ANALYSIS
+2026-04-19 11:23:19,665 [agents.macro_agent] INFO: 🌍 Macro Agent: Starting analysis...
+2026-04-19 11:23:19,666 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-19 11:23:19,745 [agents.macro_agent] INFO:   DXY: 104.25
+2026-04-19 11:23:19,745 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-19 11:23:19,799 [agents.macro_agent] INFO:   US10Y: 4.35%
+2026-04-19 11:23:29,958 [agents.macro_agent] ERROR:   VCB exchange rate fetch error: HTTPSConnectionPool(host='portal.vietcombank.com.vn', port=443): Read timed out. (read timeout=10)
+2026-04-19 11:23:29,958 [agents.macro_agent] INFO: 🌍 Macro Agent: Completed. Status=OK
+2026-04-19 11:23:29,959 [VNINDEX] INFO: ✅ Macro Agent completed.
+2026-04-19 11:23:29,960 [VNINDEX] INFO: ============================================================
+2026-04-19 11:23:29,961 [VNINDEX] INFO: STEP 2/6: FUNDAMENTAL ANALYSIS (DeepSeek-R1)
+2026-04-19 11:23:29,961 [agents.fundamental_agent] INFO: 🏢 Fundamental Agent: Bắt đầu lọc doanh nghiệp cơ bản tốt...
+2026-04-19 11:23:30,668 [agents.fundamental_agent] INFO: Tìm thấy 150 mã có thanh khoản cao. Gửi cho DeepSeek-R1...
+2026-04-19 11:28:30,742 [agents.fundamental_agent] ERROR: ❌ DeepSeek-R1 Fundamental failed: HTTPConnectionPool(host='ollama', port=11434): Read timed out. (read timeout=300)
+2026-04-19 11:28:30,748 [agents.fundamental_agent] INFO: DeepSeek-R1 đã chọn ra 29 mã cơ bản tốt: ['SHB', 'VPB', 'HPG', 'SSI', 'MWG', 'MSN', 'FPT', 'TCB', 'HDB', 'VHM', 'MBB', 'GVR', 'VRE', 'POW', 'VIC', 'ACB', 'TPB', 'BID', 'VIB', 'VCB', 'CTG', 'STB', 'VNM', 'PLX', 'SSB', 'VJC', 'GAS', 'SAB', 'BCM']
+2026-04-19 11:28:31,180 [VNINDEX] INFO: ✅ Fundamental Agent completed.
+2026-04-19 11:28:31,182 [VNINDEX] INFO: ============================================================
+2026-04-19 11:28:31,191 [VNINDEX] INFO: STEP 3/6: NEWS ANALYSIS
+2026-04-19 11:28:31,383 [agents.news_agent] INFO: 📰 News Agent: Starting analysis...
+2026-04-19 11:28:31,619 [agents.news_agent] ERROR: RSS error (cafef): 404 Client Error: Not Found for url: https://cafef.vn/rss/thi-truong-chung-khoan.rss
+2026-04-19 11:28:56,720 [agents.news_agent] INFO: 📰 News Agent: Done. 4 articles, sentiment=+0.4600
+2026-04-19 11:28:56,721 [VNINDEX] INFO: ✅ News Agent completed.
+2026-04-19 11:28:56,721 [VNINDEX] INFO: ============================================================
+2026-04-19 11:28:56,722 [VNINDEX] INFO: STEP 4/6: TECHNICAL ANALYSIS
+2026-04-19 11:28:56,722 [agents.technical_agent] INFO: 📊 Technical Agent: Starting analysis...
+2026-04-19 11:28:56,840 [agents.technical_agent] INFO: TA-Lib loaded successfully.
+2026-04-19 11:29:01,960 [agents.technical_agent] INFO: 📊 Technical Agent: Done. 29 symbols analyzed.
+2026-04-19 11:29:01,960 [VNINDEX] INFO: ✅ Technical Agent completed.
+2026-04-19 11:29:01,961 [VNINDEX] INFO: ============================================================
+2026-04-19 11:29:01,962 [VNINDEX] INFO: STEP 5/6: CEO DECISION ENGINE
+2026-04-19 11:29:01,962 [agents.risk_manager] INFO: 🛡️ Risk Manager: Starting analysis...
+2026-04-19 11:29:02,814 [agents.risk_manager] INFO: 🛡️ Risk Manager: Done. 4 alerts.
+2026-04-19 11:29:02,814 [brain.cio_engine] INFO: 🧠 CIO Engine: Starting decision process...
+2026-04-19 11:29:02,849 [brain.cio_engine] INFO:   Calling Ollama (gemma4:26b)...
+2026-04-19 11:29:05,819 [brain.cio_engine] ERROR:   Ollama call failed: 500 Server Error: Internal Server Error for url: http://ollama:11434/api/generate
+2026-04-19 11:29:05,819 [brain.cio_engine] INFO:   Using rule-based fallback...
+2026-04-19 11:29:07,000 [brain.cio_engine] INFO: 🧠 CIO Engine: Done. 29 decisions made.
+2026-04-19 11:29:07,000 [VNINDEX] INFO: ✅ CEO Agent completed.
+2026-04-19 11:29:07,001 [VNINDEX] INFO: ============================================================
+2026-04-19 11:29:07,002 [VNINDEX] INFO: STEP 6/6: PDF REPORT GENERATION
+2026-04-19 11:29:07,002 [reports.pdf_generator] INFO: 📄 Generating PDF report: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 11:29:07,019 [reports.pdf_generator] INFO: 📄 PDF saved: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 11:29:07,020 [VNINDEX] INFO: ✅ Report generated: /app/data/reports/VNINDEX_Report_2026-04-19.pdf
+2026-04-19 11:29:07,020 [VNINDEX] INFO: ============================================================
+2026-04-19 11:29:07,020 [VNINDEX] INFO: 🏁 Daily pipeline completed!
+2026-04-19 11:29:07,021 [VNINDEX] INFO: ============================================================
+2026-04-19 11:29:07,147 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:29:07,189 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:33:50,725 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:33:50,764 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:33:52,701 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:33:52,745 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:34:07,378 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:34:07,419 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:34:14,626 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:34:14,694 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:34:56,679 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:34:56,728 [database.models] INFO: Database initialized successfully.
+2026-04-19 11:35:29,879 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-19 11:35:29,911 [database.models] INFO: Database initialized successfully.
+2026-04-20 03:57:35,284 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 03:57:35,309 [database.models] INFO: Database initialized successfully.
+2026-04-20 03:57:35,310 [VNINDEX] INFO: 📅 Scheduler configured:
+2026-04-20 03:57:35,311 [VNINDEX] INFO:   08:00 - Macro Agent
+2026-04-20 03:57:35,311 [VNINDEX] INFO:   08:05 - Fundamental Agent
+2026-04-20 03:57:35,311 [VNINDEX] INFO:   08:10 - News Agent
+2026-04-20 03:57:35,311 [VNINDEX] INFO:   08:20 - Technical Agent
+2026-04-20 03:57:35,312 [VNINDEX] INFO:   08:30 - CIO Engine
+2026-04-20 03:57:35,312 [VNINDEX] INFO:   08:45 - PDF Report
+2026-04-20 03:57:35,312 [VNINDEX] INFO: ⏰ Scheduler started. Waiting for scheduled tasks...
+2026-04-20 03:57:42,972 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 03:57:42,995 [database.models] INFO: Database initialized successfully.
+2026-04-20 03:57:49,769 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 03:57:49,795 [database.models] INFO: Database initialized successfully.
+2026-04-20 03:57:49,799 [VNINDEX] INFO: 🚀 Running FULL pipeline immediately...
+2026-04-20 03:57:49,800 [VNINDEX] INFO: ============================================================
+2026-04-20 03:57:49,800 [VNINDEX] INFO: STEP 1/5: MACRO ANALYSIS
+2026-04-20 03:57:49,800 [agents.macro_agent] INFO: 🌍 Macro Agent: Starting analysis...
+2026-04-20 03:57:49,801 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-20 03:57:49,833 [agents.macro_agent] INFO:   DXY: 104.25
+2026-04-20 03:57:49,833 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-20 03:57:49,861 [agents.macro_agent] INFO:   US10Y: 4.35%
+2026-04-20 03:57:59,942 [agents.macro_agent] ERROR:   VCB exchange rate fetch error: HTTPSConnectionPool(host='portal.vietcombank.com.vn', port=443): Read timed out. (read timeout=10)
+2026-04-20 03:57:59,942 [agents.macro_agent] INFO: 🌍 Macro Agent: Completed. Status=OK
+2026-04-20 03:57:59,943 [VNINDEX] INFO: ✅ Macro Agent completed.
+2026-04-20 03:57:59,943 [VNINDEX] INFO: ============================================================
+2026-04-20 03:57:59,943 [VNINDEX] INFO: STEP 2/6: FUNDAMENTAL ANALYSIS (DeepSeek-R1)
+2026-04-20 03:57:59,944 [agents.fundamental_agent] INFO: 🏢 Fundamental Agent: Bắt đầu lọc doanh nghiệp cơ bản tốt...
+2026-04-20 03:58:00,302 [agents.fundamental_agent] INFO: Tìm thấy 150 mã có thanh khoản cao. Gửi cho DeepSeek-R1...
+2026-04-20 04:02:09,316 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 04:02:09,404 [database.models] INFO: Database initialized successfully.
+2026-04-20 04:03:53,557 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 04:03:53,657 [database.models] INFO: Database initialized successfully.
+2026-04-20 04:03:53,663 [VNINDEX] INFO: 🚀 Running FULL pipeline immediately...
+2026-04-20 04:03:53,664 [VNINDEX] INFO: ============================================================
+2026-04-20 04:03:53,665 [VNINDEX] INFO: STEP 1/5: MACRO ANALYSIS
+2026-04-20 04:03:53,666 [agents.macro_agent] INFO: 🌍 Macro Agent: Starting analysis...
+2026-04-20 04:03:53,667 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-20 04:03:53,813 [agents.macro_agent] INFO:   DXY: 104.25
+2026-04-20 04:03:53,817 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-20 04:03:53,972 [agents.macro_agent] INFO:   US10Y: 4.35%
+2026-04-20 04:04:04,185 [agents.macro_agent] ERROR:   VCB exchange rate fetch error: HTTPSConnectionPool(host='portal.vietcombank.com.vn', port=443): Read timed out. (read timeout=10)
+2026-04-20 04:04:04,192 [agents.macro_agent] INFO: 🌍 Macro Agent: Completed. Status=OK
+2026-04-20 04:04:04,193 [VNINDEX] INFO: ✅ Macro Agent completed.
+2026-04-20 04:04:04,194 [VNINDEX] INFO: ============================================================
+2026-04-20 04:04:04,196 [VNINDEX] INFO: STEP 2/6: FUNDAMENTAL ANALYSIS (DeepSeek-R1)
+2026-04-20 04:04:04,198 [agents.fundamental_agent] INFO: 🏢 Fundamental Agent: Bắt đầu lọc doanh nghiệp cơ bản tốt...
+2026-04-20 04:04:05,896 [agents.fundamental_agent] INFO: Tìm thấy 150 mã có thanh khoản cao. Gửi cho DeepSeek-R1...
+2026-04-20 04:04:17,231 [agents.fundamental_agent] ERROR: ❌ DeepSeek-R1 Fundamental failed: HTTPConnectionPool(host='ollama', port=11434): Read timed out. (read timeout=300)
+2026-04-20 04:04:17,232 [agents.fundamental_agent] INFO: DeepSeek-R1 đã chọn ra 29 mã cơ bản tốt: ['SHB', 'VPB', 'HPG', 'SSI', 'MWG', 'MSN', 'FPT', 'TCB', 'HDB', 'VHM', 'MBB', 'GVR', 'VRE', 'POW', 'VIC', 'ACB', 'TPB', 'BID', 'VIB', 'VCB', 'CTG', 'STB', 'VNM', 'PLX', 'SSB', 'VJC', 'GAS', 'SAB', 'BCM']
+2026-04-20 04:04:17,436 [VNINDEX] INFO: ✅ Fundamental Agent completed.
+2026-04-20 04:04:17,440 [VNINDEX] INFO: ============================================================
+2026-04-20 04:04:17,441 [VNINDEX] INFO: STEP 3/6: NEWS ANALYSIS
+2026-04-20 04:04:17,601 [agents.news_agent] INFO: 📰 News Agent: Starting analysis...
+2026-04-20 04:04:17,838 [agents.news_agent] ERROR: RSS error (cafef): 404 Client Error: Not Found for url: https://cafef.vn/rss/thi-truong-chung-khoan.rss
+2026-04-20 04:05:19,174 [agents.news_agent] INFO: 📰 News Agent: Done. 4 articles, sentiment=+0.0000
+2026-04-20 04:05:19,176 [VNINDEX] INFO: ✅ News Agent completed.
+2026-04-20 04:05:19,178 [VNINDEX] INFO: ============================================================
+2026-04-20 04:05:19,179 [VNINDEX] INFO: STEP 4/6: TECHNICAL ANALYSIS
+2026-04-20 04:05:19,181 [agents.technical_agent] INFO: 📊 Technical Agent: Starting analysis...
+2026-04-20 04:05:19,398 [agents.technical_agent] INFO: TA-Lib loaded successfully.
+2026-04-20 04:05:35,877 [agents.technical_agent] INFO: 📊 Technical Agent: Done. 29 symbols analyzed.
+2026-04-20 04:05:35,880 [VNINDEX] INFO: ✅ Technical Agent completed.
+2026-04-20 04:05:35,881 [VNINDEX] INFO: ============================================================
+2026-04-20 04:05:35,884 [VNINDEX] INFO: STEP 5/6: CEO DECISION ENGINE
+2026-04-20 04:05:35,887 [agents.risk_manager] INFO: 🛡️ Risk Manager: Starting analysis...
+2026-04-20 04:05:39,147 [agents.risk_manager] INFO: 🛡️ Risk Manager: Done. 4 alerts.
+2026-04-20 04:05:39,150 [brain.cio_engine] INFO: 🧠 CIO Engine: Starting decision process...
+2026-04-20 04:05:39,306 [brain.cio_engine] INFO:   Calling Ollama (gemma4:26b)...
+2026-04-20 04:07:39,406 [brain.cio_engine] ERROR:   Ollama call failed: HTTPConnectionPool(host='ollama', port=11434): Read timed out. (read timeout=120)
+2026-04-20 04:07:39,413 [brain.cio_engine] INFO:   Using rule-based fallback...
+2026-04-20 04:07:43,787 [brain.cio_engine] INFO: 🧠 CIO Engine: Done. 29 decisions made.
+2026-04-20 04:07:43,789 [VNINDEX] INFO: ✅ CEO Agent completed.
+2026-04-20 04:07:43,791 [VNINDEX] INFO: ============================================================
+2026-04-20 04:07:43,791 [VNINDEX] INFO: STEP 6/6: PDF REPORT GENERATION
+2026-04-20 04:07:43,792 [reports.pdf_generator] INFO: 📄 Generating PDF report: /app/data/reports/VNINDEX_Report_2026-04-20.pdf
+2026-04-20 04:07:43,878 [reports.pdf_generator] INFO: 📄 PDF saved: /app/data/reports/VNINDEX_Report_2026-04-20.pdf
+2026-04-20 04:07:43,880 [VNINDEX] INFO: ✅ Report generated: /app/data/reports/VNINDEX_Report_2026-04-20.pdf
+2026-04-20 04:07:43,883 [VNINDEX] INFO: ============================================================
+2026-04-20 04:07:43,884 [VNINDEX] INFO: 🏁 Daily pipeline completed!
+2026-04-20 04:07:43,886 [VNINDEX] INFO: ============================================================
+2026-04-20 04:09:05,979 [agents.fundamental_agent] ERROR: ❌ DeepSeek-R1 Fundamental failed: HTTPConnectionPool(host='ollama', port=11434): Read timed out. (read timeout=300)
+2026-04-20 04:09:05,982 [agents.fundamental_agent] INFO: DeepSeek-R1 đã chọn ra 29 mã cơ bản tốt: ['SHB', 'VPB', 'HPG', 'SSI', 'MWG', 'MSN', 'FPT', 'TCB', 'HDB', 'VHM', 'MBB', 'GVR', 'VRE', 'POW', 'VIC', 'ACB', 'TPB', 'BID', 'VIB', 'VCB', 'CTG', 'STB', 'VNM', 'PLX', 'SSB', 'VJC', 'GAS', 'SAB', 'BCM']
+2026-04-20 04:09:06,047 [VNINDEX] INFO: ✅ Fundamental Agent completed.
+2026-04-20 04:09:06,048 [VNINDEX] INFO: ============================================================
+2026-04-20 04:09:06,048 [VNINDEX] INFO: STEP 3/6: NEWS ANALYSIS
+2026-04-20 04:09:06,075 [agents.news_agent] INFO: 📰 News Agent: Starting analysis...
+2026-04-20 04:09:06,253 [agents.news_agent] ERROR: RSS error (cafef): 404 Client Error: Not Found for url: https://cafef.vn/rss/thi-truong-chung-khoan.rss
+2026-04-20 04:09:39,412 [agents.news_agent] INFO: 📰 News Agent: Done. 4 articles, sentiment=+0.4600
+2026-04-20 04:09:39,413 [VNINDEX] INFO: ✅ News Agent completed.
+2026-04-20 04:09:39,413 [VNINDEX] INFO: ============================================================
+2026-04-20 04:09:39,414 [VNINDEX] INFO: STEP 4/6: TECHNICAL ANALYSIS
+2026-04-20 04:09:39,414 [agents.technical_agent] INFO: 📊 Technical Agent: Starting analysis...
+2026-04-20 04:09:40,798 [agents.technical_agent] INFO: 📊 Technical Agent: Done. 29 symbols analyzed.
+2026-04-20 04:09:40,798 [VNINDEX] INFO: ✅ Technical Agent completed.
+2026-04-20 04:09:40,799 [VNINDEX] INFO: ============================================================
+2026-04-20 04:09:40,799 [VNINDEX] INFO: STEP 5/6: CEO DECISION ENGINE
+2026-04-20 04:09:40,799 [agents.risk_manager] INFO: 🛡️ Risk Manager: Starting analysis...
+2026-04-20 04:09:41,384 [agents.risk_manager] INFO: 🛡️ Risk Manager: Done. 4 alerts.
+2026-04-20 04:09:41,385 [brain.cio_engine] INFO: 🧠 CIO Engine: Starting decision process...
+2026-04-20 04:09:41,411 [brain.cio_engine] INFO:   Calling Ollama (gemma4:26b)...
+2026-04-20 04:09:43,075 [brain.cio_engine] ERROR:   Ollama call failed: 500 Server Error: Internal Server Error for url: http://ollama:11434/api/generate
+2026-04-20 04:09:43,075 [brain.cio_engine] INFO:   Using rule-based fallback...
+2026-04-20 04:09:43,874 [brain.cio_engine] INFO: 🧠 CIO Engine: Done. 29 decisions made.
+2026-04-20 04:09:43,874 [VNINDEX] INFO: ✅ CEO Agent completed.
+2026-04-20 04:09:43,874 [VNINDEX] INFO: ============================================================
+2026-04-20 04:09:43,875 [VNINDEX] INFO: STEP 6/6: PDF REPORT GENERATION
+2026-04-20 04:09:43,875 [reports.pdf_generator] INFO: 📄 Generating PDF report: /app/data/reports/VNINDEX_Report_2026-04-20.pdf
+2026-04-20 04:09:43,888 [reports.pdf_generator] INFO: 📄 PDF saved: /app/data/reports/VNINDEX_Report_2026-04-20.pdf
+2026-04-20 04:09:43,888 [VNINDEX] INFO: ✅ Report generated: /app/data/reports/VNINDEX_Report_2026-04-20.pdf
+2026-04-20 04:09:43,889 [VNINDEX] INFO: ============================================================
+2026-04-20 04:09:43,889 [VNINDEX] INFO: 🏁 Daily pipeline completed!
+2026-04-20 04:09:43,889 [VNINDEX] INFO: ============================================================
+2026-04-20 04:09:43,977 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 04:09:43,997 [database.models] INFO: Database initialized successfully.
+2026-04-20 12:51:29,306 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 12:51:29,337 [database.models] INFO: Database initialized successfully.
+2026-04-20 12:51:29,338 [VNINDEX] INFO: 📅 Scheduler configured:
+2026-04-20 12:51:29,338 [VNINDEX] INFO:   08:00 - Macro Agent
+2026-04-20 12:51:29,339 [VNINDEX] INFO:   08:05 - Fundamental Agent
+2026-04-20 12:51:29,339 [VNINDEX] INFO:   08:10 - News Agent
+2026-04-20 12:51:29,339 [VNINDEX] INFO:   08:20 - Technical Agent
+2026-04-20 12:51:29,339 [VNINDEX] INFO:   08:30 - CIO Engine
+2026-04-20 12:51:29,340 [VNINDEX] INFO:   08:45 - PDF Report
+2026-04-20 12:51:29,340 [VNINDEX] INFO: ⏰ Scheduler started. Waiting for scheduled tasks...
+2026-04-20 12:51:38,194 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 12:51:38,219 [database.models] INFO: Database initialized successfully.
+2026-04-20 12:51:45,598 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 12:51:45,627 [database.models] INFO: Database initialized successfully.
+2026-04-20 12:51:45,630 [VNINDEX] INFO: 🚀 Running FULL pipeline immediately...
+2026-04-20 12:51:45,631 [VNINDEX] INFO: ============================================================
+2026-04-20 12:51:45,632 [VNINDEX] INFO: STEP 1/5: MACRO ANALYSIS
+2026-04-20 12:51:45,633 [agents.macro_agent] INFO: 🌍 Macro Agent: Starting analysis...
+2026-04-20 12:51:45,633 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-20 12:51:45,666 [agents.macro_agent] INFO:   DXY: 104.25
+2026-04-20 12:51:45,666 [agents.macro_agent] WARNING:   FRED_API_KEY not set. Using mock data.
+2026-04-20 12:51:45,693 [agents.macro_agent] INFO:   US10Y: 4.35%
+2026-04-20 12:51:55,776 [agents.macro_agent] ERROR:   VCB exchange rate fetch error: HTTPSConnectionPool(host='portal.vietcombank.com.vn', port=443): Read timed out. (read timeout=10)
+2026-04-20 12:51:55,777 [agents.macro_agent] INFO: 🌍 Macro Agent: Completed. Status=OK
+2026-04-20 12:51:55,777 [VNINDEX] INFO: ✅ Macro Agent completed.
+2026-04-20 12:51:55,777 [VNINDEX] INFO: ============================================================
+2026-04-20 12:51:55,778 [VNINDEX] INFO: STEP 2/6: FUNDAMENTAL ANALYSIS (DeepSeek-R1)
+2026-04-20 12:51:55,778 [agents.fundamental_agent] INFO: 🏢 Fundamental Agent: Bắt đầu lọc doanh nghiệp cơ bản tốt...
+2026-04-20 12:51:56,339 [agents.fundamental_agent] INFO: Tìm thấy 150 mã có thanh khoản cao. Gửi cho DeepSeek-R1...
+2026-04-20 12:56:56,419 [agents.fundamental_agent] ERROR: ❌ DeepSeek-R1 Fundamental failed: HTTPConnectionPool(host='ollama', port=11434): Read timed out. (read timeout=300)
+2026-04-20 12:56:56,423 [agents.fundamental_agent] INFO: DeepSeek-R1 đã chọn ra 29 mã cơ bản tốt: ['SHB', 'VPB', 'HPG', 'SSI', 'MWG', 'MSN', 'FPT', 'TCB', 'HDB', 'VHM', 'MBB', 'GVR', 'VRE', 'POW', 'VIC', 'ACB', 'TPB', 'BID', 'VIB', 'VCB', 'CTG', 'STB', 'VNM', 'PLX', 'SSB', 'VJC', 'GAS', 'SAB', 'BCM']
+2026-04-20 12:56:56,609 [VNINDEX] INFO: ✅ Fundamental Agent completed.
+2026-04-20 12:56:56,611 [VNINDEX] INFO: ============================================================
+2026-04-20 12:56:56,612 [VNINDEX] INFO: STEP 3/6: NEWS ANALYSIS
+2026-04-20 12:56:56,765 [agents.news_agent] INFO: 📰 News Agent: Starting analysis...
+2026-04-20 12:56:56,968 [agents.news_agent] ERROR: RSS error (cafef): 404 Client Error: Not Found for url: https://cafef.vn/rss/thi-truong-chung-khoan.rss
+2026-04-20 12:57:18,195 [agents.news_agent] INFO: 📰 News Agent: Done. 4 articles, sentiment=+0.4200
+2026-04-20 12:57:18,196 [VNINDEX] INFO: ✅ News Agent completed.
+2026-04-20 12:57:18,196 [VNINDEX] INFO: ============================================================
+2026-04-20 12:57:18,197 [VNINDEX] INFO: STEP 4/6: TECHNICAL ANALYSIS
+2026-04-20 12:57:18,197 [agents.technical_agent] INFO: 📊 Technical Agent: Starting analysis...
+2026-04-20 12:57:18,238 [agents.technical_agent] INFO: TA-Lib loaded successfully.
+2026-04-20 12:57:20,928 [agents.technical_agent] INFO: 📊 Technical Agent: Done. 29 symbols analyzed.
+2026-04-20 12:57:20,929 [VNINDEX] INFO: ✅ Technical Agent completed.
+2026-04-20 12:57:20,929 [VNINDEX] INFO: ============================================================
+2026-04-20 12:57:20,929 [VNINDEX] INFO: STEP 5/6: CEO DECISION ENGINE
+2026-04-20 12:57:20,930 [agents.risk_manager] INFO: 🛡️ Risk Manager: Starting analysis...
+2026-04-20 12:57:21,455 [agents.risk_manager] INFO: 🛡️ Risk Manager: Done. 4 alerts.
+2026-04-20 12:57:21,456 [brain.cio_engine] INFO: 🧠 CIO Engine: Starting decision process...
+2026-04-20 12:57:21,477 [brain.cio_engine] INFO:   Calling Ollama (gemma4:26b)...
+2026-04-20 12:57:23,100 [brain.cio_engine] ERROR:   Ollama call failed: 500 Server Error: Internal Server Error for url: http://ollama:11434/api/generate
+2026-04-20 12:57:23,100 [brain.cio_engine] INFO:   Using rule-based fallback...
+2026-04-20 12:57:23,885 [brain.cio_engine] INFO: 🧠 CIO Engine: Done. 29 decisions made.
+2026-04-20 12:57:23,885 [VNINDEX] INFO: ✅ CEO Agent completed.
+2026-04-20 12:57:23,886 [VNINDEX] INFO: ============================================================
+2026-04-20 12:57:23,886 [VNINDEX] INFO: STEP 6/6: PDF REPORT GENERATION
+2026-04-20 12:57:23,886 [reports.pdf_generator] INFO: 📄 Generating PDF report: /app/data/reports/VNINDEX_Report_2026-04-20.pdf
+2026-04-20 12:57:23,899 [reports.pdf_generator] INFO: 📄 PDF saved: /app/data/reports/VNINDEX_Report_2026-04-20.pdf
+2026-04-20 12:57:23,899 [VNINDEX] INFO: ✅ Report generated: /app/data/reports/VNINDEX_Report_2026-04-20.pdf
+2026-04-20 12:57:23,900 [VNINDEX] INFO: ============================================================
+2026-04-20 12:57:23,900 [VNINDEX] INFO: 🏁 Daily pipeline completed!
+2026-04-20 12:57:23,900 [VNINDEX] INFO: ============================================================
+2026-04-20 12:57:23,996 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 12:57:24,030 [database.models] INFO: Database initialized successfully.
+2026-04-20 12:58:29,992 [database.models] INFO: Initializing database at /app/data/vnindex.db
+2026-04-20 12:58:30,020 [database.models] INFO: Database initialized successfully.

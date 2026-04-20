@@ -15,6 +15,7 @@ from agents.macro_agent import MacroAgent
 from agents.news_agent import NewsAgent
 from agents.technical_agent import TechnicalAgent
 from agents.risk_manager import RiskManager
+from agents.fundamental_agent import FundamentalAgent
 from brain.cio_engine import CIOEngine
 from reports.pdf_generator import PDFReportGenerator
 import config
@@ -39,6 +40,7 @@ logger = logging.getLogger("VNINDEX")
 # ─── Global state cho pipeline ─────────────────────────────────────────────────
 pipeline_state = {
     "macro_result": None,
+    "fundamental_result": None,
     "news_result": None,
     "tech_result": None,
     "risk_result": None,
@@ -60,10 +62,23 @@ def run_macro():
         pipeline_state["macro_result"] = {"status": "ERROR", "alerts": []}
 
 
+def run_fundamental():
+    """08:05 - Chạy Fundamental Agent."""
+    logger.info("=" * 60)
+    logger.info("STEP 2/6: FUNDAMENTAL ANALYSIS (DeepSeek-R1)")
+    try:
+        agent = FundamentalAgent()
+        pipeline_state["fundamental_result"] = agent.run()
+        logger.info("✅ Fundamental Agent completed.")
+    except Exception as e:
+        logger.error(f"❌ Fundamental Agent failed: {e}", exc_info=True)
+        pipeline_state["fundamental_result"] = {"status": "ERROR", "approved_symbols": []}
+
+
 def run_news():
     """08:10 - Chạy News Agent."""
     logger.info("=" * 60)
-    logger.info("STEP 2/5: NEWS ANALYSIS")
+    logger.info("STEP 3/6: NEWS ANALYSIS")
     try:
         agent = NewsAgent()
         pipeline_state["news_result"] = agent.run()
@@ -76,10 +91,12 @@ def run_news():
 def run_technical():
     """08:20 - Chạy Technical Agent."""
     logger.info("=" * 60)
-    logger.info("STEP 3/5: TECHNICAL ANALYSIS")
+    logger.info("STEP 4/6: TECHNICAL ANALYSIS")
     try:
+        fund_res = pipeline_state.get("fundamental_result") or {}
+        symbols = fund_res.get("approved_symbols")
         agent = TechnicalAgent()
-        pipeline_state["tech_result"] = agent.run()
+        pipeline_state["tech_result"] = agent.run(symbols=symbols)
         logger.info("✅ Technical Agent completed.")
     except Exception as e:
         logger.error(f"❌ Technical Agent failed: {e}", exc_info=True)
@@ -89,7 +106,7 @@ def run_technical():
 def run_cio():
     """08:30 - Chạy CEO Agent (Gemma 4)."""
     logger.info("=" * 60)
-    logger.info("STEP 4/5: CEO DECISION ENGINE")
+    logger.info("STEP 5/6: CEO DECISION ENGINE")
     try:
         # Chạy Risk Manager trước
         risk_mgr = RiskManager()
@@ -115,7 +132,7 @@ def run_cio():
 def run_report():
     """08:45 - Tạo PDF Report."""
     logger.info("=" * 60)
-    logger.info("STEP 5/5: PDF REPORT GENERATION")
+    logger.info("STEP 6/6: PDF REPORT GENERATION")
     try:
         generator = PDFReportGenerator()
         filepath = generator.generate(
@@ -139,6 +156,7 @@ def run_full_pipeline():
     """Chạy toàn bộ pipeline ngay lập tức (cho testing)."""
     logger.info("🚀 Running FULL pipeline immediately...")
     run_macro()
+    run_fundamental()
     run_news()
     run_technical()
     run_cio()
@@ -149,6 +167,7 @@ def run_full_pipeline():
 def setup_scheduler():
     """Thiết lập lịch chạy hàng ngày."""
     schedule.every().day.at(config.SCHEDULE_MACRO).do(run_macro)
+    schedule.every().day.at(config.SCHEDULE_FUNDAMENTAL).do(run_fundamental)
     schedule.every().day.at(config.SCHEDULE_NEWS).do(run_news)
     schedule.every().day.at(config.SCHEDULE_TECHNICAL).do(run_technical)
     schedule.every().day.at(config.SCHEDULE_CIO).do(run_cio)
@@ -156,6 +175,7 @@ def setup_scheduler():
 
     logger.info("📅 Scheduler configured:")
     logger.info(f"  {config.SCHEDULE_MACRO} - Macro Agent")
+    logger.info(f"  {config.SCHEDULE_FUNDAMENTAL} - Fundamental Agent")
     logger.info(f"  {config.SCHEDULE_NEWS} - News Agent")
     logger.info(f"  {config.SCHEDULE_TECHNICAL} - Technical Agent")
     logger.info(f"  {config.SCHEDULE_CIO} - CIO Engine")
